@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "4478V_2026-2027",
+    "project_name": "4478Y_2026-2027",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -636,7 +636,8 @@
     },
     "upload_options": {
       "description": "",
-      "icon": "X"
+      "icon": "X",
+      "slot": 2
     },
     "use_early_access": false
   }

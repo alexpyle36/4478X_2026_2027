@@ -1,18 +1,14 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include "autonroutes.hpp"
+#include "distance.hpp"
 #include "pneumatics.hpp"
-#include "pros/misc.hpp"
-#include <cmath>
+#include "pid.hpp"
 #include "drivercontrol.hpp"
+#include "functions.hpp"
+#include "devices.hpp"
 
 using namespace pros;
-
-// Master controller
-Controller master(E_CONTROLLER_MASTER);
-// First pneumatic
-adi::DigitalOut pneumatic1('A');
-// Second pneumatic
-adi::DigitalOut pneumatic2('B');
 
 void buttons_fn() {
 	// State for button "L1" effects (0 = off, 1 = on)
@@ -146,4 +142,17 @@ void buttons_fn() {
 		// 20 msec delay to save resources
 		delay(20);
 	}
+}
+
+// Task for handling the controller butons
+Task buttons(buttons_fn);
+
+void joysticks() {
+	// Left y axis controler position
+	int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	// Right y axis controler position
+	int rightY = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
+		
+	// Move the robot based of of inputs from the controlers left and right y axis position
+	chassis.tank(leftY, rightY);
 }

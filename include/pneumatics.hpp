@@ -3,6 +3,4 @@ enum PneumaticState {
     OUT
 };
 
-void setPneumatic1(PneumaticState toggle);
-
-void setPneumatic2(PneumaticState toggle);
+void setClaw(PneumaticState toggle);
