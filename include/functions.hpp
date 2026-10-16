@@ -3,6 +3,7 @@
 
 using namespace pros;
 
+double wrap(double value, double min, double max);
 void headingWrap_fn();
 void poseReset_fn();
 void impactCorrection_fn();

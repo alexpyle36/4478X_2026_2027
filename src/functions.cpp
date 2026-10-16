@@ -9,9 +9,11 @@
 using namespace pros;
 
 // wraps a value around a min and max value
-void wrap(double value, double min, double max) {
-	if (value < min) value = max;
-	else if (value > max) value = min;
+
+double wrap(double value, double min, double max) {
+	if (value < min) value += max;
+	else if (value > max) value -= max;
+	return value;
 }
 
 bool lastInMotion = false;
@@ -38,8 +40,8 @@ void poseReset_fn() {
 // wraps the heading around if it goes above 360 or below 0
 void headingWrap_fn() {
 	while (true) {
-		wrap(chassis.getPose().theta, 0, 360);
-		wrap(lastPose.theta, 0, 360);
+		chassis.setPose(chassis.getPose().x, chassis.getPose().y, wrap(chassis.getPose().theta, 0, 360));
+		chassis.setPose(lastPose.x, lastPose.y, wrap(lastPose.theta, 0, 360));
 		// delay to save resources
 		delay(20);
 	}

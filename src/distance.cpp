@@ -22,7 +22,7 @@ void findObject_fn() {
 	}
 }
 
-Task findObject(findFrontObject_fn);
+Task findObject(findObject_fn);
 
 void turnToFind(float aproxTheta) {
 	findObject.resume();

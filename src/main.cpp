@@ -7,6 +7,7 @@
 #include "drivercontrol.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
+#include "initialize.hpp"
 
 using namespace pros;
 
@@ -17,7 +18,7 @@ using namespace pros;
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	
+	initialize_fn();
 }
 
 /**
@@ -54,7 +55,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-    PID_tuning(PID::ANGULAR);
+    nonLemlibMainSideAuton();
 }
 
 /**

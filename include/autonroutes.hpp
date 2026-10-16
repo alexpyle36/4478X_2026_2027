@@ -1,3 +1,5 @@
+void nonLemlibMainSideAuton();
+
 void skillsAuton();
 
 void mainSideAuton();

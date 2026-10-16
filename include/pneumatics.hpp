@@ -1,6 +1,6 @@
 enum PneumaticState {
-    IN,
-    OUT
+    CLOSED,
+    OPEN
 };
 
 void setClaw(PneumaticState toggle);

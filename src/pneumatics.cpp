@@ -7,10 +7,10 @@ using namespace pros;
 
 void setClaw(PneumaticState toggle) {
     switch (toggle) {
-		case OUT:
+		case CLOSED:
             claw.set_value(false);
 			break;
-        case IN:
+        case OPEN:
             claw.set_value(true);
 			break;
 	}

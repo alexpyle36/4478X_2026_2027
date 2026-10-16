@@ -21,5 +21,17 @@ void PID_tuning(PID type) {
     		chassis.turnToHeading(90, 100000);
 			headingWrap.suspend();
 			break;
+		case ALL:
+			headingWrap.resume();
+			chassis.moveToPoint(0, 24, 100000);
+			chassis.turnToHeading(90, 100000);
+			chassis.moveToPoint(24, 24, 100000);
+			chassis.turnToHeading(180, 100000);
+			chassis.moveToPoint(24, 0, 100000);
+			chassis.turnToHeading(270, 100000);
+			chassis.moveToPoint(0, 0, 100000);
+			chassis.turnToHeading(0, 100000);
+			headingWrap.suspend();
+			break;
 	}
 }
