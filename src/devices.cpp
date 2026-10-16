@@ -29,12 +29,20 @@ class Cascade {
 
 		void score(double height) {
 			if (height != 0) {
-				motorGroup->move_absolute(height, 600);
+				motorGroup->move_absolute(height, 200);
 			}
 		}
 		
 		void reset() {
-			motorGroup->move_absolute(0, 600);
+			motorGroup->move_absolute(0, 200);
+		}
+
+		void raise() {
+			motorGroup->move_velocity(200);
+		}
+
+		void lower() {
+			motorGroup->move_velocity(-200);
 		}
 };
 
@@ -66,7 +74,7 @@ Distance front_sensor(12);
 // Cascade motor group
 MotorGroup cascadeMotorGroup({10, -2}, MotorGearset::green);
 // Cascade object for controlling the cascade lift
-//Cascade cascade(&cascadeMotorGroup);
+Cascade cascade(&cascadeMotorGroup);
 // Vertical tracking wheel
 /*lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor,
 											  lemlib::Omniwheel::NEW_2,

@@ -1,7 +1,7 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 
-/*class Cascade{
+class Cascade{
     public:
         Cascade(pros::MotorGroup* motorGroup) : motorGroup(motorGroup) {}
         pros::MotorGroup* motorGroup;
@@ -9,7 +9,11 @@
         void score(double height) {}
         
         void reset() {}
-};*/
+
+        void raise() {}
+
+        void lower() {}
+};
 
 extern pros::Controller master;
 extern pros::MotorGroup left_mg;
@@ -19,7 +23,7 @@ extern pros::Imu imu;
 extern pros::Rotation vertical_sensor;
 extern pros::Rotation horizontal_sensor;
 extern pros::MotorGroup cascadeMotorGroup;
-//extern Cascade cascade;
+extern Cascade cascade;
 extern pros::adi::DigitalOut claw;
 extern pros::Distance front_sensor;
 extern lemlib::TrackingWheel vertical_tracking_wheel;
