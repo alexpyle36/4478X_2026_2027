@@ -1,11 +1,21 @@
 #pragma once
 
-void nonLemlibMainSideAuton();
+enum autonroute {
+    Skills = 1,
+    Base = 2,
+    Left = 3,
+    Right = 4,
+    AWP = 5,
+};
+
+void baseAuton();
 
 void skillsAuton();
 
-void mainSideAuton();
+void leftAuton();
 
-void rightSideAuton();
+void rightAuton();
 
 void AWPAuton();
+
+void autonRoute(autonroute route);

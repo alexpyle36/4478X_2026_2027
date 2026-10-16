@@ -3,17 +3,19 @@
 #include "autonroutes.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
+#include "pneumatics.hpp" // IWYU pragma: keep
 
 using namespace pros;
 
-// Skills auton route
+// Skills auton route - Not Finished or tested
 void skillsAuton() {
 	headingWrap.resume();
     chassis.setPose(0, 0, 0);
 	headingWrap.suspend();
 }
 
-void nonLemlibMainSideAuton() {
+// Basic auton route - Finished and tested
+void baseAuton() {
 	headingWrap.resume();
 	cascadeMotorGroup.move(200);
 	delay(1000);
@@ -45,8 +47,8 @@ void nonLemlibMainSideAuton() {
 	headingWrap.suspend();
 }
 
-// Main side auton route
-void mainSideAuton() {
+// Main side auton route - Finished but not tested
+void leftAuton() {
     headingWrap.resume();
 	chassis.setPose(0, 0, 0);
 	chassis.moveToPoint(0, -10, 1000, {.forwards = false});
@@ -66,8 +68,8 @@ void mainSideAuton() {
 	headingWrap.suspend();
 }
 
-// Right side auton route
-void rightSideAuton() {
+// Right side auton route - Not finished or tested
+void rightAuton() {
     headingWrap.resume();
     chassis.setPose(0, 0, 0);
 	chassis.setPose(0, 0, 0);
@@ -77,9 +79,29 @@ void rightSideAuton() {
 	headingWrap.suspend();
 }
 
-// AWP auton route
+// AWP auton route - Not finished or tested
 void AWPAuton() {
     headingWrap.resume();
     chassis.setPose(0, 0, 0);
 	headingWrap.suspend();
+}
+
+void autonRoute(autonroute route) {
+	switch (route) {
+		case Skills:
+			skillsAuton();
+			break;
+		case Base:
+			baseAuton();
+			break;
+		case Left:
+			leftAuton();
+			break;
+		case Right:
+			rightAuton();
+			break;
+		case AWP:
+			AWPAuton();
+			break;
+	};
 }

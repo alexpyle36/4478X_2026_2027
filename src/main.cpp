@@ -54,7 +54,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-    nonLemlibMainSideAuton();
+    autonRoute(Base);
 }
 
 /**
@@ -72,7 +72,9 @@ void autonomous() {
  */
 
 void opcontrol() {
+	headingDisp.suspend();
 	buttons.resume();
+	overheatedDisp.resume();
 	// Loops until broken by controller or competition control
 	while (true) {
 		joysticks();

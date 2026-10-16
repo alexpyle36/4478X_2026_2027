@@ -14,7 +14,7 @@ void headingDisp_fn() {
     }
 }
 
-void somethingDisp_fn() {
+void overheatedDisp_fn() {
     int overheated = 0;
     while (true) {
         if ((cascadeMotorGroup.is_over_temp(0) == 1) || (cascadeMotorGroup.is_over_temp(1) == 1)) {
@@ -42,16 +42,18 @@ void somethingDisp_fn() {
 }
 
 Task headingDisp(headingDisp_fn);
-Task somethingDisp(somethingDisp_fn);
+Task overheatedDisp(overheatedDisp_fn);
 
 void initialize_fn() {
     lcd::initialize();
     buttons.suspend();
-    headingWrap.resume();
     impactCorrection.suspend();
     findObject.suspend();
     poseReset.suspend();
+    overheatedDisp.suspend();
     chassis.calibrate(); // calibrate sensors
+    headingDisp.resume();
+    headingWrap.resume();
     claw.set_value(false);
     cascade.reset();
 }
