@@ -1,8 +1,5 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "distance.hpp"
-#include "pneumatics.hpp"
-#include "pid.hpp"
 #include "devices.hpp"
 #include "functions.hpp"
 

@@ -1,7 +1,7 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "pid.hpp"
-#include "drivercontrol.hpp"
+#include <initializer_list>
+#include "devices.hpp"
 
 using namespace pros;
 
@@ -22,29 +22,24 @@ using namespace pros;
 	static constexpr double THIRTEEN = 13; // temporary
 };*/
 
-class Cascade {
-	public:
-		Cascade(MotorGroup* motorGroup) : motorGroup(motorGroup) {}
-        MotorGroup* motorGroup;
+Cascade::Cascade(AbstractMotor& motorgroup) : motors(motorgroup) {}
 
-		void score(double height) {
-			if (height != 0) {
-				motorGroup->move_absolute(height, 200);
-			}
-		}
+void Cascade::score(double height, int maxspeed) {
+	motors.move_absolute(height, maxspeed);
+}
 		
-		void reset() {
-			motorGroup->move_absolute(0, 200);
-		}
+void Cascade::reset(int maxspeed) {
+	motors.tare_position_all();
+}
 
-		void raise() {
-			motorGroup->move_velocity(200);
-		}
+void Cascade::raise(int maxspeed) {
+	motors.move_velocity(maxspeed);
+}
 
-		void lower() {
-			motorGroup->move_velocity(-200);
-		}
-};
+void Cascade::lower(int maxspeed) {
+	motors.move_velocity(-maxspeed);
+}
+
 
 
 // Master controller
@@ -68,13 +63,13 @@ Imu imu(13);
 // Horizontal tracking wheel encoder
 /*Rotation horizontal_sensor(9);*/
 // Pneumatic claw
-adi::DigitalOut claw('A', LOW);
+adi::DigitalOut claw('A');
 // Front distance sensor
 Distance front_sensor(12);
 // Cascade motor group
-MotorGroup cascadeMotorGroup({10, -2}, MotorGearset::green);
+MotorGroup cascadeMotorGroup({-10, 2}, MotorGearset::green);
 // Cascade object for controlling the cascade lift
-Cascade cascade(&cascadeMotorGroup);
+Cascade cascade(cascadeMotorGroup);
 // Vertical tracking wheel
 /*lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor,
 											  lemlib::Omniwheel::NEW_2,

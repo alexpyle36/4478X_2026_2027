@@ -1,12 +1,8 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "autonroutes.hpp"
-#include "distance.hpp"
-#include "pneumatics.hpp"
-#include "pid.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
-#include "drivercontrol.hpp"
 
 using namespace pros;
 
@@ -40,9 +36,8 @@ void nonLemlibMainSideAuton() {
 	left_mg.move_relative(2.6, 200);
 	right_mg.move_relative(2.6, 200);
 	delay(1400);
-	cascadeMotorGroup.move(-200);
-	delay(850);
-	cascadeMotorGroup.brake();
+	cascade.score(10);
+	delay(1000);
 	claw.set_value(true);
 	delay(500);
 	left_mg.move_relative(-1.3, 200);

@@ -1,12 +1,8 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "autonroutes.hpp"
 #include "devices.hpp"
-#include "distance.hpp"
-#include "drivercontrol.hpp"
 #include "functions.hpp"
 #include "pid.hpp"
-#include "pneumatics.hpp"
 
 using namespace pros;
 

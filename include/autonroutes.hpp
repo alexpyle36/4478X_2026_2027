@@ -1,3 +1,5 @@
+#pragma once
+
 void nonLemlibMainSideAuton();
 
 void skillsAuton();

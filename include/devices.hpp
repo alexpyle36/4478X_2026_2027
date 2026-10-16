@@ -1,18 +1,22 @@
+#pragma once
+
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include "pros/abstract_motor.hpp"
 
 class Cascade{
     public:
-        Cascade(pros::MotorGroup* motorGroup) : motorGroup(motorGroup) {}
-        pros::MotorGroup* motorGroup;
+        Cascade(pros::AbstractMotor& motorgroup);
 
-        void score(double height) {}
+        void score(double height, int maxspeed = 200);
         
-        void reset() {}
+        void reset(int maxspeed = 200);
 
-        void raise() {}
+        void raise(int maxspeed = 200);
 
-        void lower() {}
+        void lower(int maxspeed = 200);
+    private:
+        pros::MotorGroup motors;
 };
 
 extern pros::Controller master;

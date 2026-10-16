@@ -1,11 +1,6 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "autonroutes.hpp"
-#include "distance.hpp"
-#include "pneumatics.hpp"
-#include "pid.hpp"
 #include "drivercontrol.hpp"
-#include "functions.hpp"
 #include "devices.hpp"
 
 using namespace pros;
@@ -19,12 +14,11 @@ void buttons_fn() {
 		bool buttonR2 = master.get_digital(E_CONTROLLER_DIGITAL_R2); // Bool for controller button "L2"
 		bool buttonB = master.get_digital_new_press(E_CONTROLLER_DIGITAL_B); // Bool for controller button "R1"
 		
-		if (buttonB) clawState = !clawState; // State switch for button "B" effect
-		if (clawState) claw.set_value(clawState);
+		if (buttonB) clawState = !clawState; claw.set_value(clawState); 
 
 		// selection process for the cascade buttons
-		if (buttonL2) cascadeMotorGroup.move_velocity(200); /*cascade.raise();*/
-		else if (buttonR2) cascadeMotorGroup.move_velocity(-200); /*cascade.lower();*/
+		if (buttonL2) /*cascadeMotorGroup.move_velocity(200);*/ cascade.raise();
+		else if (buttonR2) /*cascadeMotorGroup.move_velocity(-200);*/ cascade.lower();
 		else cascadeMotorGroup.brake();
 
 		// 20 msec delay to save resources
