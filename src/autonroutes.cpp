@@ -3,14 +3,48 @@
 #include "autonroutes.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
+#include "pros/rtos.h"
 
 using namespace pros;
 
 // Skills auton route - Not Finished or tested
 void skillsAuton() {
 	headingWrap.resume();
-    chassis.setPose(0, 0, 0);
+	cascadeMotorGroup.move(200);
+	delay(1000);
+	cascadeMotorGroup.brake();
+	left_mg.move_relative(-1.2, 300);
+	right_mg.move_relative(-1.2, 300);
+	delay(500);
+	left_mg.move_relative(0.5, 300);
+	right_mg.move_relative(0.5, 300);
+	delay(1000);
+	left_mg.move_relative(-1, 200);
+	right_mg.move_relative(-1, 200);
+	delay(400);
+	left_mg.move_relative(3.2, 200);
+	right_mg.move_relative(3.2, 200);
+	delay(620);
+	left_mg.move_relative(1.3, 200);
+	right_mg.move_relative(-1.3, 200);
+	delay(800);
+	left_mg.move_relative(2.6, 200);
+	right_mg.move_relative(2.6, 200);
+	delay(1400);
+	cascade.score(10);
+	delay(1000);
+	claw.set_value(true);
+	delay(500);
+	left_mg.move_relative(-1.3, 200);
+	right_mg.move_relative(-1.3, 200);
+	delay(2000);
+	left_mg.move_relative(1.3, 200);
+	right_mg.move_relative(-1.3, 200);
+	delay(800);
+	left_mg.move_relative(4, 200);
+	right_mg.move_relative(4, 200);
 	headingWrap.suspend();
+
 }
 
 // Basic auton route - Finished and tested
@@ -94,6 +128,8 @@ void rightAuton() {
 	cascade.score(10);
 	delay(1000);
 	claw.set_value(true);
+	delay(500);
+	cascade.score(360);
 	delay(500);
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
