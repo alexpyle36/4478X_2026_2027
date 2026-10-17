@@ -28,7 +28,7 @@ void Cascade::score(double height, int maxspeed) {
 	motors.move_absolute(height, maxspeed);
 }
 		
-void Cascade::reset(int maxspeed) {
+void Cascade::reset() {
 	motors.tare_position_all();
 }
 
@@ -59,9 +59,9 @@ lemlib::Drivetrain drivetrainSettings(&left_mg,
 // Imu
 Imu imu(13);
 // Vertical tracking wheel encoder
-/*Rotation vertical_sensor(8);*/
+Rotation vertical_sensor(8);
 // Horizontal tracking wheel encoder
-/*Rotation horizontal_sensor(9);*/
+Rotation horizontal_sensor(9);
 // Pneumatic claw
 adi::DigitalOut claw('A');
 // Front distance sensor
@@ -71,15 +71,15 @@ MotorGroup cascadeMotorGroup({-10, 2}, MotorGearset::green);
 // Cascade object for controlling the cascade lift
 Cascade cascade(cascadeMotorGroup);
 // Vertical tracking wheel
-/*lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor,
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor,
 											  lemlib::Omniwheel::NEW_2,
 											  1 // temporary
-);*/
+);
 // Horizontal tracking wheel
-/*lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_sensor,
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_sensor,
 											    lemlib::Omniwheel::NEW_2,
 											    1 // temporary
-);*/
+);
 // Odometry settings
 lemlib::OdomSensors odomSensors(nullptr,
 								nullptr,

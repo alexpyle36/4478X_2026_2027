@@ -2,7 +2,6 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "autonroutes.hpp" // IWYU pragma: keep
 #include "distance.hpp" // IWYU pragma: keep
-#include "pneumatics.hpp" // IWYU pragma: keep
 #include "pid.hpp" // IWYU pragma: keep
 #include "drivercontrol.hpp"
 #include "devices.hpp" // IWYU pragma: keep

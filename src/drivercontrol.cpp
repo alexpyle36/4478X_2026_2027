@@ -17,8 +17,8 @@ void buttons_fn() {
 		if (buttonB) clawState = !clawState; claw.set_value(clawState); 
 
 		// selection process for the cascade buttons
-		if (buttonL2) /*cascadeMotorGroup.move_velocity(200);*/ cascade.raise();
-		else if (buttonR2) /*cascadeMotorGroup.move_velocity(-200);*/ cascade.lower();
+		if (buttonL2 && !buttonR2) cascade.raise();
+		else if (buttonR2 && !buttonL2) cascade.lower();
 		else cascadeMotorGroup.brake();
 
 		// 20 msec delay to save resources

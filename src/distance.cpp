@@ -1,8 +1,6 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include <math.h>
 #include "distance.hpp"
-#include <algorithm> // IWYU pragma: keep
 #include "devices.hpp"
 
 using namespace pros;

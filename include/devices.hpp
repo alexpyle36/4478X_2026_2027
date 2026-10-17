@@ -10,7 +10,7 @@ class Cascade{
 
         void score(double height, int maxspeed = 200);
         
-        void reset(int maxspeed = 200);
+        void reset();
 
         void raise(int maxspeed = 200);
 
