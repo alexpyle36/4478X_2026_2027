@@ -46,30 +46,6 @@ double lateral_kD = 3;
 bool isLateralMotion = false;
 bool lateralIsOscillating = false;
 
-// Angular PID controller
-lemlib::ControllerSettings angular_controller(angular_kP,
-											  angular_kI,
-											  angular_kD,
-											  0,
-											  0,
-											  0,
-											  0,
-											  0,
-											  0
-);
-
-// Lateral PID controller
-lemlib::ControllerSettings lateral_controller(lateral_kP,
-											  lateral_kI,
-											  lateral_kD,
-											  3,
-											  1,
-											  100,
-											  3,
-											  500,
-											  20 
-);
-
 void autoTune() {
 	if (isAngularMotion) {
 		angular_controller.kI = 0;

@@ -4,6 +4,7 @@
 #include "drivercontrol.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
+#include "pros/abstract_motor.hpp"
 
 using namespace pros;
 
@@ -56,4 +57,5 @@ void initialize_fn() {
     headingWrap.resume();
     claw.set_value(false);
     cascade.reset();
+    cascadeMotorGroup.set_brake_mode_all(MotorBrake::hold);
 }

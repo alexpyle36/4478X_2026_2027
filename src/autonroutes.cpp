@@ -85,8 +85,8 @@ void rightAuton() {
 	left_mg.move_relative(3.2, 200);
 	right_mg.move_relative(3.2, 200);
 	delay(620);
-	left_mg.move_relative(1.3, 200);
-	right_mg.move_relative(-1.3, 200);
+	left_mg.move_relative(-1.3, 200);
+	right_mg.move_relative(1.3, 200);
 	delay(800);
 	left_mg.move_relative(2.6, 200);
 	right_mg.move_relative(2.6, 200);
