@@ -3,7 +3,6 @@
 #include "autonroutes.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
-#include "pros/rtos.h"
 
 using namespace pros;
 
