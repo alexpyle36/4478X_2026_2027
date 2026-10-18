@@ -37,8 +37,9 @@ void poseReset_fn() {
 // wraps the heading around if it goes above 360 or below 0
 void headingWrap_fn() {
 	while (true) {
-		chassis.setPose(chassis.getPose().x, chassis.getPose().y, wrap(chassis.getPose().theta, 0, 360));
-		chassis.setPose(lastPose.x, lastPose.y, wrap(lastPose.theta, 0, 360));
+		double theta = chassis.getPose().theta;
+		chassis.setPose(chassis.getPose().x, chassis.getPose().y, wrap(theta, 0, 360));
+		//chassis.setPose(lastPose.x, lastPose.y, wrap(lastPose.theta, 0, 360));
 		// delay to save resources
 		delay(20);
 	}

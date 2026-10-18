@@ -51,7 +51,7 @@ MotorGroup right_mg({11, 12}, MotorGearset::blue);
 // Drivetrain settings
 lemlib::Drivetrain drivetrainSettings(&left_mg,
 							  &right_mg,
-							  11.825, // temporary
+							  11.5, // temporary 
 							  lemlib::Omniwheel::NEW_325,
 							  450,
 							  2 // temporary
@@ -99,9 +99,9 @@ lemlib::ControllerSettings lateral_controller(10, // Best working value: 10
 											  20 
 );
 // Angular PID controller
-lemlib::ControllerSettings angular_controller(3, // Best working value: 3
+lemlib::ControllerSettings angular_controller(2.35, // Best working value: 2.35
 											  0, // Best working value: 0
-											  10, // Best working value: 10
+											  19, // Best working value: 19
 											  0,
 											  0,
 											  0,

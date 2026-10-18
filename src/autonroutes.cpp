@@ -3,15 +3,15 @@
 #include "autonroutes.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
-#include "pros/rtos.h"
+#include "initialize.hpp"
 
 using namespace pros;
 
 // Skills auton route - Not Finished or tested
 void skillsAuton() {
-	headingWrap.resume();
 	cascadeMotorGroup.move(200);
 	delay(1000);
+	
 	cascadeMotorGroup.brake();
 	left_mg.move_relative(-1.2, 300);
 	right_mg.move_relative(-1.2, 300);
@@ -38,18 +38,40 @@ void skillsAuton() {
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
 	delay(2000);
+	chassis.turnToPoint(23.5, 40, 3000);
+	chassis.turnToPoint(23.5, 40, 1000);
+	chassis.moveToPoint(23.5, 40, 7000, {.maxSpeed = 31.75});
+	claw.set_value(false);
+	delay(500);
+	cascadeMotorGroup.move(200);
+	delay(1000);
+	cascadeMotorGroup.brake();
+	chassis.turnToHeading(180, 2000);
+	chassis.turnToHeading(180, 2000);
+	delay(2000);
+	left_mg.move_relative(2.6, 200);
+	right_mg.move_relative(2.6, 200);
+	delay(1400);
+	cascade.score(10);
+	delay(1000);
+	claw.set_value(true);
+	delay(500);
+	left_mg.move_relative(-1.3, 200);
+	right_mg.move_relative(-1.3, 200);
+	delay(2000);
 	left_mg.move_relative(1.3, 200);
 	right_mg.move_relative(-1.3, 200);
 	delay(800);
-	left_mg.move_relative(4, 200);
-	right_mg.move_relative(4, 200);
-	headingWrap.suspend();
+	left_mg.move_relative(-4, 200);
+	right_mg.move_relative(-4, 200);	
+}
 
+void fullSkills() {
+	
 }
 
 // Basic auton route - Finished and tested
 void baseAuton() {
-	headingWrap.resume();
 	cascadeMotorGroup.move(200);
 	delay(1000);
 	cascadeMotorGroup.brake();
@@ -77,33 +99,28 @@ void baseAuton() {
 	delay(500);
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
-	headingWrap.suspend();
 }
 
 // Main side auton route - Finished but not tested
 void leftAuton() {
-    headingWrap.resume();
-	chassis.setPose(0, 0, 0);
-	chassis.moveToPoint(0, -10, 1000, {.forwards = false});
-	chassis.setPose(0, -2, chassis.getPose().theta);
-	chassis.moveToPoint(0, 0, 500);
-	chassis.moveToPoint(0, -10, 2000, {.forwards = false});
-    chassis.setPose(0, -2, chassis.getPose().theta);
-	chassis.moveToPoint(0, 16, 2000);
-	chassis.turnToPoint(23.5, 16, 3000);
-	chassis.moveToPoint(16, 16, 2000);
-	cascade.score(100);
-	chassis.moveToPoint(20, 16, 2000);
+	chassis.moveToPoint(0, -5, 1000, {.forwards = false});
+    chassis.setPose(0, 0, chassis.getPose().theta);
+	chassis.moveToPoint(0, 20, 2000);
+	chassis.setPose(chassis.getPose().x, 23.5, chassis.getPose().theta);
+	chassis.turnToPoint(23.5, 23.5, 3000);
+	cascade.score(720);
+	chassis.moveToPoint(23.5, 23.5, 2000);
 	claw.set_value(true);
-	chassis.moveToPoint(16, 16, 2000, {.forwards = false});
-	cascade.reset();
-	chassis.moveToPoint(0, 16, 2000);
-	headingWrap.suspend();
+	chassis.moveToPoint(0, 23.5, 2000, {.forwards = false});
+	cascade.score(20);
+	chassis.turnToPoint(23.5, 47, 1000);
+	chassis.moveToPoint(23.5, 47, 3000);
+	claw.set_value(false);
+	cascade.score(720);
 }
 
 // Right side auton route - Not tested
 void rightAuton() {
-    headingWrap.resume();
 	cascadeMotorGroup.move(200);
 	delay(1000);
 	cascadeMotorGroup.brake();
@@ -133,20 +150,23 @@ void rightAuton() {
 	delay(500);
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
-	headingWrap.suspend();
 }
 
 // AWP auton route - Not finished or tested
 void AWPAuton() {
-    headingWrap.resume();
-    chassis.setPose(0, 0, 0);
-	headingWrap.suspend();
+    
 }
 
 void autonRoute(autonroute route) {
+	headingDisp.resume();
+	headingWrap.resume();
+	chassis.setPose(0, 0, 0);
 	switch (route) {
 		case Skills:
 			skillsAuton();
+			break;
+		case FullSkills:
+			fullSkills();
 			break;
 		case Base:
 			baseAuton();
@@ -161,4 +181,6 @@ void autonRoute(autonroute route) {
 			AWPAuton();
 			break;
 	};
+	headingDisp.suspend();
+	headingWrap.suspend();
 }

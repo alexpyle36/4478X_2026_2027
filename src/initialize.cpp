@@ -5,13 +5,14 @@
 #include "functions.hpp"
 #include "devices.hpp"
 #include "pros/abstract_motor.hpp"
+#include "pros/llemu.hpp"
 
 using namespace pros;
 
 void headingDisp_fn() {
     while (true) {
-        master.print(0, 0, "Theta: %.2f", chassis.getPose().theta);
-        delay(100);
+        lcd::print(1, "Theta: %.2f", chassis.getPose().theta);
+        delay(20);
     }
 }
 
@@ -26,16 +27,16 @@ void overheatedDisp_fn() {
         }
         switch (overheated) {
             case 0:
-                master.print(0, 0, "Heated: %.2f", "None");
+                master.print(2, 0, "Heated: None");
                 break;
             case 1:
-                master.print(0, 0, "Heated: %.2f", "Cascade");
+                master.print(2, 0, "Heated: Cascade");
                 break;
             case 2:
-                master.print(0, 0, "Heated: %.2f", "Drive");
+                master.print(2, 0, "Heated: Drive");
                 break;
             case 3:
-                master.print(0, 0, "Heated: %.2f", "All");
+                master.print(2, 0, "Heated: All");
                 break;
         }
         delay(100);
@@ -52,9 +53,9 @@ void initialize_fn() {
     findObject.suspend();
     poseReset.suspend();
     overheatedDisp.suspend();
-    chassis.calibrate(); // calibrate sensors
     headingDisp.resume();
     headingWrap.resume();
+    chassis.calibrate(); // calibrate sensors
     claw.set_value(false);
     cascade.reset();
     cascadeMotorGroup.set_brake_mode_all(MotorBrake::hold);

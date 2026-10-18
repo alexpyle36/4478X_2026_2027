@@ -2,10 +2,11 @@
 
 enum autonroute {
     Skills = 1,
-    Base = 2,
-    Left = 3,
-    Right = 4,
-    AWP = 5,
+    FullSkills = 2,
+    Base = 3,
+    Left = 4,
+    Right = 5,
+    AWP = 6
 };
 
 void baseAuton();

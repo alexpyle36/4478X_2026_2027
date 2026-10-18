@@ -1,7 +1,7 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "devices.hpp"
-#include "functions.hpp"
+#include "functions.hpp" // IWYU pragma: keep
 #include "pid.hpp"
 
 using namespace pros;
@@ -13,12 +13,9 @@ void PID_tuning(PID type) {
     		chassis.moveToPoint(0, 24, 100000);
 			break;
 		case ANGULAR:
-			headingWrap.resume();
-    		chassis.turnToHeading(90, 100000);
-			headingWrap.suspend();
+    		chassis.turnToHeading(180, 100000);
 			break;
 		case ALL:
-			headingWrap.resume();
 			chassis.moveToPoint(0, 24, 100000);
 			chassis.turnToHeading(90, 100000);
 			chassis.moveToPoint(24, 24, 100000);
@@ -27,12 +24,12 @@ void PID_tuning(PID type) {
 			chassis.turnToHeading(270, 100000);
 			chassis.moveToPoint(0, 0, 100000);
 			chassis.turnToHeading(0, 100000);
-			headingWrap.suspend();
 			break;
 	}
+	
 }
 
-// angular autoTune variables
+/*// angular autoTune variables
 double angular_kP = 3;
 double angular_kI = 0;
 double angular_kD = 10;
@@ -71,4 +68,4 @@ void autoTune() {
 
 	}
 
-}
+}*/
