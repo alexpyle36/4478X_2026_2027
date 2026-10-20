@@ -63,8 +63,33 @@ void Cascade::move(moveParams params) {
 	else motors.move_velocity(-abs(params.maxspeed));
 }
 
-void Cascade::brake() {
+void Cascade::brake(brakeParams params) {
 	motors.brake();
+	/*if (params.snapToPin) {
+		double height = Cascade::getHeight();
+		double div = 3.25;
+		double sub;
+		if (params.goalType == Goal::ALLIANCE) {
+			sub = 3.25;
+		}
+		else if (params.goalType == Goal::NEUTRAL) {
+			sub = 5.8;
+		}
+		else {
+			sub = 8.7;
+		}
+		height -= sub;
+		height /= div;
+		int i = 0;
+		while ((i * div + sub) < height) {
+			i++;
+		}
+		if (((i * div + sub) - height) < (height - ((i - 1) * div))) {
+			Cascade::score((i * div + sub), {.inHalfPins = true});
+		} else {
+			Cascade::score(std::max(0.0, (i - 1) * div), {.inHalfPins = true});
+		}
+	}*/
 }
 
 double Cascade::getHeight() {

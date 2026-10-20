@@ -55,6 +55,7 @@ void competition_initialize() {
 void autonomous() {
     //autonRoute(Skills);
 	//PID_tuning(ANGULAR);
+	lcd::print(3, "Height: %.2f", cascade.getHeight());
 }
 
 /**
@@ -72,7 +73,6 @@ void autonomous() {
  */
 
 void opcontrol() {
-	lcd::print(1, "Height: %.2f", cascade.getHeight());
 	headingDisp.suspend();
 	headingErrorDisp_task.suspend();
 	distanceErrorDisp_task.suspend();

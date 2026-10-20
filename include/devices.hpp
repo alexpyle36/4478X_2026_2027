@@ -21,6 +21,11 @@ struct moveParams {
     bool up = true;
 };
 
+struct brakeParams {
+    bool snapToPin = false;
+    Goal goalType = Goal::ALLIANCE;
+};
+
 class Cascade {
     public:
         Cascade(pros::AbstractMotor& motorgroup);
@@ -31,7 +36,7 @@ class Cascade {
 
         void move(moveParams params = {});
 
-        void brake();
+        void brake(brakeParams params = {});
 
         double getHeight();
     private:
