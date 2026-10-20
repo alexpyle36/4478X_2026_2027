@@ -2,13 +2,11 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "drivercontrol.hpp"
 #include "devices.hpp"
-#include "pros/misc.h"
 
 using namespace pros;
 
 void buttons_fn() {
 	// State for button effects (-1 = reverse, 0 = off, 1 = on)
-	bool clawState = 0;
 	bool cascadeRevEnabled = 0;
 	
 	while (true) {
@@ -16,13 +14,13 @@ void buttons_fn() {
 		bool buttonR1 = master.get_digital(E_CONTROLLER_DIGITAL_R1); // Bool for controller button "L2"
 		bool buttonB = master.get_digital_new_press(E_CONTROLLER_DIGITAL_B); // Bool for controller button "B"
 
-		if (buttonB) clawState = !clawState; claw.set_value(clawState); 
-
+		if (buttonB) claw.setClaw(claw.getState() == Claw::CLOSED ? Claw::OPEN : Claw::CLOSED); 
+		
 		// selection process for the cascade buttons
-		//if ((((cascadeMotorGroup.get_position(0) > 20) || cascadeRevEnabled) && (cascadeMotorGroup.get_target_velocity(0) < 0)) || (!buttonL2 && !buttonR2)) cascadeMotorGroup.brake();
-		if (buttonL1 && !buttonR1) cascade.lower();
-		else if (buttonR1 && !buttonL1) cascade.raise();
-		else cascadeMotorGroup.brake();
+		if (buttonR1 && !buttonL1) cascade.move();
+		else if ((cascade.getHeight() <= 36)) cascade.brake();
+		else if (buttonL1 && !buttonR1) cascade.move({.up = false});
+		else cascade.brake();
 		// 20 msec delay to save resources
 		delay(20);
 	}

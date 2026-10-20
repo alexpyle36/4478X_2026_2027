@@ -1,19 +1,23 @@
+#include "lemlib/chassis/chassis.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "devices.hpp"
 #include "functions.hpp" // IWYU pragma: keep
 #include "pid.hpp"
+#include "initialize.hpp"
 
 using namespace pros;
 
-void PID_tuning(PID type) {
+void PID_tuning(PID type, double expected) {
 	chassis.setPose(0, 0, 0);
 	switch (type) {
 		case LATERAL:
-    		chassis.moveToPoint(0, 24, 100000);
+			distanceErrorDisp(expected);
+    		chassis.moveToPoint(0, expected, 100000);
 			break;
 		case ANGULAR:
-    		chassis.turnToHeading(180, 100000);
+			headingErrorDisp(expected);
+			chassis.turnToHeading(expected, 100000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE});
 			break;
 		case ALL:
 			chassis.moveToPoint(0, 24, 100000);
@@ -25,8 +29,7 @@ void PID_tuning(PID type) {
 			chassis.moveToPoint(0, 0, 100000);
 			chassis.turnToHeading(0, 100000);
 			break;
-	}
-	
+	}	
 }
 
 /*// angular autoTune variables

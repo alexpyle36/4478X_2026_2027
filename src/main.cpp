@@ -54,7 +54,7 @@ void competition_initialize() {
  */
 void autonomous() {
     //autonRoute(Skills);
-	PID_tuning(ANGULAR);
+	//PID_tuning(ANGULAR);
 }
 
 /**
@@ -72,7 +72,10 @@ void autonomous() {
  */
 
 void opcontrol() {
+	lcd::print(1, "Height: %.2f", cascade.getHeight());
 	headingDisp.suspend();
+	headingErrorDisp_task.suspend();
+	distanceErrorDisp_task.suspend();
 	master.clear_line(2);
 	buttons.resume();
 	overheatedDisp.resume();

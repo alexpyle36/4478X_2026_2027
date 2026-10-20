@@ -1,6 +1,7 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include <initializer_list>
+#include "pros/adi.hpp"
+#include <math.h>
 #include "devices.hpp"
 
 using namespace pros;
@@ -22,25 +23,70 @@ using namespace pros;
 	static constexpr double THIRTEEN = 13; // temporary
 };*/
 
+// Cascade class
 Cascade::Cascade(AbstractMotor& motorgroup) : motors(motorgroup) {}
 
-void Cascade::score(double height, int maxspeed) {
-	motors.move_absolute(height, maxspeed);
+double Cascade::perimeter = ((0.164 * M_PI) + (((31.0 / 36.0) - 0.164) * 4));
+
+int Cascade::inchesToDegrees(double inches) {
+
+	return std::round((inches * 360) / perimeter);
+}
+
+double Cascade::degreesToInches(double deg) {
+	return (deg * perimeter) / 360;
+}
+
+void Cascade::score(double height, scoreParams params) {// One half pin/cup is 3.25 inches
+	if (params.inHalfPins) {
+		height *= 3.25;
+		if (params.goalType == Goal::ALLIANCE) height += 3.25;
+		else if (params.goalType == Goal::NEUTRAL) height += 5.8;
+		else height += 8.7;
+	}
+	motors.move_absolute(inchesToDegrees(height), params.maxspeed);
+	if (params.async) {
+		for (int i = 0; i < motors.size(); i++) {
+			while (abs(motors.get_actual_velocity(i)) >= 0.1) {
+				delay(20);
+			}
+		}
+	}
 }
 		
-void Cascade::reset() {
-	motors.tare_position_all();
+void Cascade::setZeroPos(double inches) {
+	motors.set_zero_position_all(inchesToDegrees(inches));
 }
 
-void Cascade::raise(int maxspeed) {
-	motors.move_velocity(maxspeed);
+void Cascade::move(moveParams params) {
+	if (params.up) motors.move_velocity(abs(params.maxspeed));
+	else motors.move_velocity(-abs(params.maxspeed));
 }
 
-void Cascade::lower(int maxspeed) {
-	motors.move_velocity(-maxspeed);
+void Cascade::brake() {
+	motors.brake();
 }
 
+double Cascade::getHeight() {
+	double totalPos = 0;
+	for (int i = 0; i < (motors.size()); i++) {
+		totalPos += motors.get_position(i);
+	}
+	return degreesToInches(totalPos / motors.get_position_all().size());;
+}
 
+/*--------------------------------------------------------------------------------------*/
+
+Claw::Claw(adi::DigitalOut& pnuematic) : piston(pnuematic) {}
+
+void Claw::setClaw(clawState state) {
+	currentClawState = state;
+	piston.set_value(state);
+}
+
+Claw::clawState Claw::getState() {
+	return currentClawState;
+}
 
 // Master controller
 Controller master(E_CONTROLLER_MASTER);
@@ -57,17 +103,19 @@ lemlib::Drivetrain drivetrainSettings(&left_mg,
 							  2 // temporary
 );
 // Imu
-Imu imu(13);
+Imu imu(15);
 // Vertical tracking wheel encoder
 Rotation vertical_sensor(8);
 // Horizontal tracking wheel encoder
 Rotation horizontal_sensor(9);
 // Pneumatic claw
-adi::DigitalOut claw('A');
+adi::DigitalOut clawADI('A');
+// Claw object for controlling the claw pneumatic
+Claw claw(clawADI);
 // Front distance sensor
 Distance front_sensor(12);
 // Cascade motor group
-MotorGroup cascadeMotorGroup({-10, 2}, MotorGearset::green);
+MotorGroup cascadeMotorGroup({1, -2, 9, -10}, MotorGearset::green);
 // Cascade object for controlling the cascade lift
 Cascade cascade(cascadeMotorGroup);
 // Vertical tracking wheel
@@ -100,8 +148,8 @@ lemlib::ControllerSettings lateral_controller(10, // Best working value: 10
 );
 // Angular PID controller
 lemlib::ControllerSettings angular_controller(2.35, // Best working value: 2.35
-											  0, // Best working value: 0
-											  19, // Best working value: 19
+											  0.001, // Best working value: 0
+											  19.0, // Best working value: 19
 											  0,
 											  0,
 											  0,

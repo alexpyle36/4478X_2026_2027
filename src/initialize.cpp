@@ -4,14 +4,29 @@
 #include "drivercontrol.hpp"
 #include "functions.hpp"
 #include "devices.hpp"
-#include "pros/abstract_motor.hpp"
-#include "pros/llemu.hpp"
 
 using namespace pros;
 
 void headingDisp_fn() {
     while (true) {
         lcd::print(1, "Theta: %.2f", chassis.getPose().theta);
+        delay(20);
+    }
+}
+
+double expectedHeading = 0;
+double expectedDistance = 0;
+
+void headingErrorDisp_fn() {
+    while (true) {
+        lcd::print(2, "Error: %.2f", chassis.getPose().theta - expectedHeading);
+        delay(20);
+    }
+}
+
+void distanceErrorDisp_fn() {
+    while (true) {
+        lcd::print(2, "Error: %.2f", chassis.getPose().y - expectedDistance);
         delay(20);
     }
 }
@@ -45,6 +60,18 @@ void overheatedDisp_fn() {
 
 Task headingDisp(headingDisp_fn);
 Task overheatedDisp(overheatedDisp_fn);
+Task headingErrorDisp_task(headingErrorDisp_fn);
+Task distanceErrorDisp_task(distanceErrorDisp_fn);
+
+void headingErrorDisp(double expected) {
+    expectedHeading = expected;
+    headingErrorDisp_task.resume();
+}
+
+void distanceErrorDisp(double expected) {
+    expectedHeading = expected;
+    distanceErrorDisp_task.resume();
+}
 
 void initialize_fn() {
     lcd::initialize();
@@ -53,10 +80,10 @@ void initialize_fn() {
     findObject.suspend();
     poseReset.suspend();
     overheatedDisp.suspend();
+    headingErrorDisp_task.suspend();
     headingDisp.resume();
     headingWrap.resume();
     chassis.calibrate(); // calibrate sensors
-    claw.set_value(false);
-    cascade.reset();
-    cascadeMotorGroup.set_brake_mode_all(MotorBrake::hold);
+    claw.setClaw(Claw::CLOSED);
+    cascade.setZeroPos();
 }

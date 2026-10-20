@@ -9,10 +9,10 @@ using namespace pros;
 
 // Skills auton route - Not Finished or tested
 void skillsAuton() {
-	cascadeMotorGroup.move(200);
+	cascade.move();
 	delay(1000);
 	
-	cascadeMotorGroup.brake();
+	cascade.brake();
 	left_mg.move_relative(-1.2, 300);
 	right_mg.move_relative(-1.2, 300);
 	delay(500);
@@ -33,7 +33,7 @@ void skillsAuton() {
 	delay(1400);
 	cascade.score(10);
 	delay(1000);
-	claw.set_value(true);
+	claw.setClaw(Claw::OPEN);
 	delay(500);
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
@@ -41,7 +41,7 @@ void skillsAuton() {
 	chassis.turnToPoint(23.5, 40, 3000);
 	chassis.turnToPoint(23.5, 40, 1000);
 	chassis.moveToPoint(23.5, 40, 7000, {.maxSpeed = 31.75});
-	claw.set_value(false);
+	claw.setClaw(Claw::CLOSED);
 	delay(500);
 	cascadeMotorGroup.move(200);
 	delay(1000);
@@ -54,7 +54,7 @@ void skillsAuton() {
 	delay(1400);
 	cascade.score(10);
 	delay(1000);
-	claw.set_value(true);
+	claw.setClaw(Claw::OPEN);
 	delay(500);
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
@@ -95,7 +95,7 @@ void baseAuton() {
 	delay(1400);
 	cascade.score(10);
 	delay(1000);
-	claw.set_value(true);
+	claw.setClaw(Claw::CLOSED);
 	delay(500);
 	left_mg.move_relative(-1.3, 200);
 	right_mg.move_relative(-1.3, 200);
@@ -110,12 +110,12 @@ void leftAuton() {
 	chassis.turnToPoint(23.5, 23.5, 3000);
 	cascade.score(720);
 	chassis.moveToPoint(23.5, 23.5, 2000);
-	claw.set_value(true);
+	claw.setClaw(Claw::CLOSED);
 	chassis.moveToPoint(0, 23.5, 2000, {.forwards = false});
 	cascade.score(20);
 	chassis.turnToPoint(23.5, 47, 1000);
 	chassis.moveToPoint(23.5, 47, 3000);
-	claw.set_value(false);
+	claw.setClaw(Claw::OPEN);
 	cascade.score(720);
 }
 
@@ -144,7 +144,7 @@ void rightAuton() {
 	delay(1400);
 	cascade.score(10);
 	delay(1000);
-	claw.set_value(true);
+	claw.setClaw(Claw::CLOSED);
 	delay(500);
 	cascade.score(360);
 	delay(500);
