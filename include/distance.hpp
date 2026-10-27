@@ -3,7 +3,13 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 
-void findObject_fn();
+enum Dist {
+    FRONT,
+    RIGHT,
+    BACK,
+    LEFT
+};
+
 void turnToFind(float aproxTheta);
 
-extern pros::Task findObject;
+lemlib::Pose rayCasting();

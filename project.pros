@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "4478Y_1.4.3",
+    "project_name": "4478Y_2.2.0",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -637,7 +637,7 @@
     "upload_options": {
       "description": "",
       "icon": "pizza",
-      "slot": 4
+      "slot": 3
     },
     "use_early_access": false
   }

@@ -1,9 +1,10 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "autonroutes.hpp"
-#include "functions.hpp"
+#include "functions.hpp" // IWYU pragma: keep
 #include "devices.hpp"
-#include "initialize.hpp"
+#include "initialize.hpp" // IWYU pragma: keep
+#include "pros/motors.h"
 
 using namespace pros;
 
@@ -67,7 +68,40 @@ void skillsAuton() {
 }
 
 void fullSkills() {
-	
+	chassis.setPose(0, 9, 0);
+	cascade.score(20);
+	chassis.moveToPoint(48, 24, 3000, {.maxSpeed = 75});
+	chassis.waitUntilDone();
+	cascade.score(10);
+	delay(1500);
+	claw.setClaw(Claw::OPEN);
+	delay(300);
+	chassis.moveToPoint(0, 24, 3000, {.forwards = false});
+	chassis.waitUntil(20);
+	cascade.score(0);
+	chassis.waitUntilDone();
+	chassis.moveToPose(0, 7, 180, 2000);
+	claw.setClaw(Claw::CLOSED);
+	delay(300);
+	chassis.moveToPoint(0, 24, 3000, {.forwards = false, .maxSpeed = 75});
+	chassis.waitUntilDone();
+	cascade.score(30);
+	chassis.turnToPoint(48, 24, 1000);
+	chassis.moveToPoint(48, 24, 2000, {.maxSpeed = 75});
+	chassis.waitUntilDone();
+	cascade.score(15);
+	delay(1500);
+	claw.setClaw(Claw::OPEN);
+	/*chassis.moveToPoint(10, 74, 5000, {.maxSpeed = 60});
+	chassis.waitUntilDone();
+	cascade.score(10);
+	delay(1500);
+	claw.setClaw(Claw::OPEN);
+	delay(200);
+	chassis.moveToPoint(10, 64, 1000, {.forwards = false});
+	chassis.waitUntilDone();
+	chassis.moveToPoint(0, 0, 5000, {.maxSpeed = 30});*/
+	//*/
 }
 
 // Basic auton route - Finished and tested
@@ -158,9 +192,6 @@ void AWPAuton() {
 }
 
 void autonRoute(autonroute route) {
-	headingDisp.resume();
-	headingWrap.resume();
-	chassis.setPose(0, 0, 0);
 	switch (route) {
 		case Skills:
 			skillsAuton();
@@ -181,6 +212,4 @@ void autonRoute(autonroute route) {
 			AWPAuton();
 			break;
 	};
-	headingDisp.suspend();
-	headingWrap.suspend();
 }

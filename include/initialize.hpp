@@ -3,12 +3,9 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 
+
+extern pros::Task mainDisp;
+extern pros::Task pidErrorDisp_task;
+
+void headingErrorDisp(double expectedTheta, double expectedDist);
 void initialize_fn();
-
-extern pros::Task headingDisp;
-extern pros::Task overheatedDisp;
-extern pros::Task headingErrorDisp_task;
-extern pros::Task distanceErrorDisp_task;
-
-void headingErrorDisp(double expected);
-void distanceErrorDisp(double expected);

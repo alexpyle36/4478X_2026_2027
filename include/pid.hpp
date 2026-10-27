@@ -9,5 +9,5 @@ enum PID {
 	ALL
 };
 
-void PID_tuning(PID type);
+void PID_tuning(PID type, double expected);
 

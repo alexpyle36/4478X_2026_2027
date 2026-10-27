@@ -1,6 +1,7 @@
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "pros/adi.hpp"
+#include "pros/motors.h"
 #include <math.h>
 #include "devices.hpp"
 
@@ -29,7 +30,6 @@ Cascade::Cascade(AbstractMotor& motorgroup) : motors(motorgroup) {}
 double Cascade::perimeter = ((0.164 * M_PI) + (((31.0 / 36.0) - 0.164) * 4));
 
 int Cascade::inchesToDegrees(double inches) {
-
 	return std::round((inches * 360) / perimeter);
 }
 
@@ -44,16 +44,10 @@ void Cascade::score(double height, scoreParams params) {// One half pin/cup is 3
 		else if (params.goalType == Goal::NEUTRAL) height += 5.8;
 		else height += 8.7;
 	}
+
 	motors.move_absolute(inchesToDegrees(height), params.maxspeed);
-	if (params.async) {
-		for (int i = 0; i < motors.size(); i++) {
-			while (abs(motors.get_actual_velocity(i)) >= 0.1) {
-				delay(20);
-			}
-		}
-	}
-}
-		
+}	
+
 void Cascade::setZeroPos(double inches) {
 	motors.set_zero_position_all(inchesToDegrees(inches));
 }
@@ -63,7 +57,8 @@ void Cascade::move(moveParams params) {
 	else motors.move_velocity(-abs(params.maxspeed));
 }
 
-void Cascade::brake(brakeParams params) {
+void Cascade::brake(/*brakeParams params*/) {
+	motors.set_brake_mode_all(E_MOTOR_BRAKE_HOLD);
 	motors.brake();
 	/*if (params.snapToPin) {
 		double height = Cascade::getHeight();
@@ -94,7 +89,7 @@ void Cascade::brake(brakeParams params) {
 
 double Cascade::getHeight() {
 	double totalPos = 0;
-	for (int i = 0; i < (motors.size()); i++) {
+	for (int i = 0; i < motors.size(); i++) {
 		totalPos += motors.get_position(i);
 	}
 	return degreesToInches(totalPos / motors.get_position_all().size());;
@@ -116,9 +111,9 @@ Claw::clawState Claw::getState() {
 // Master controller
 Controller master(E_CONTROLLER_MASTER);
 // Left motor group
-MotorGroup left_mg({-19, -20}, MotorGearset::blue);
+MotorGroup left_mg({-11, -12}, MotorGearset::blue);
 // Right motor group
-MotorGroup right_mg({11, 12}, MotorGearset::blue);
+MotorGroup right_mg({19, 20}, MotorGearset::blue);
 // Drivetrain settings
 lemlib::Drivetrain drivetrainSettings(&left_mg,
 							  &right_mg,
@@ -138,7 +133,13 @@ adi::DigitalOut clawADI('A');
 // Claw object for controlling the claw pneumatic
 Claw claw(clawADI);
 // Front distance sensor
-Distance front_sensor(12);
+Distance front_sensor(13);
+// Right distance sensor
+Distance right_sensor(14);
+// Back distance sensor
+Distance back_sensor(16);
+// Left distance sensor
+Distance left_sensor(17);
 // Cascade motor group
 MotorGroup cascadeMotorGroup({1, -2, 9, -10}, MotorGearset::green);
 // Cascade object for controlling the cascade lift

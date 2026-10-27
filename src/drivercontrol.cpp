@@ -34,10 +34,9 @@ void buttons_fn() {
 		
 		// selection process for the cascade buttons
 		if (buttonR1 && !buttonL1) cascade.move();
-		else if ((cascade.getHeight() <= 36)) cascade.brake();
+		//else if ((cascade.getHeight() <= 36)) cascade.brake();
 		else if (buttonL1 && !buttonR1) cascade.move({.up = false});
 		else cascade.brake(/*{.snapToPin = true, .goalType = GoalType}*/);
-	
 		// 20 msec delay to save resources
 		delay(20);
 	}

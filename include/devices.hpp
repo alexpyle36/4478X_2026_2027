@@ -13,7 +13,6 @@ struct scoreParams {
     int maxspeed = 200;
     bool inHalfPins = false;
     Goal goalType = Goal::ALLIANCE;
-    bool async = true;
 };
 
 struct moveParams {
@@ -21,10 +20,10 @@ struct moveParams {
     bool up = true;
 };
 
-struct brakeParams {
+/*struct brakeParams {
     bool snapToPin = false;
     Goal goalType = Goal::ALLIANCE;
-};
+};*/
 
 class Cascade {
     public:
@@ -36,7 +35,7 @@ class Cascade {
 
         void move(moveParams params = {});
 
-        void brake(brakeParams params = {});
+        void brake(/*brakeParams params = {}*/);
 
         double getHeight();
     private:
@@ -56,8 +55,8 @@ class Claw{
         Claw(pros::adi::DigitalOut& pnuematic);
 
         enum clawState {
-            CLOSED = true,
-            OPEN = false
+            CLOSED = false,
+            OPEN = true
         };
 
         void setClaw(clawState state);
@@ -75,4 +74,7 @@ extern pros::MotorGroup cascadeMotorGroup;
 extern Cascade cascade;
 extern Claw claw;
 extern pros::Distance front_sensor;
+extern pros::Distance right_sensor;
+extern pros::Distance back_sensor;
+extern pros::Distance left_sensor;
 extern lemlib::Chassis chassis;

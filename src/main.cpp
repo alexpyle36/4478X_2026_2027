@@ -38,7 +38,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-
+	initialize_fn();
 }
 
 /**
@@ -53,9 +53,8 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-    //autonRoute(Skills);
-	//PID_tuning(ANGULAR);
-	lcd::print(3, "Height: %.2f", cascade.getHeight());
+    //autonRoute(FullSkills);
+	PID_tuning(LATERAL, 24);
 }
 
 /**
@@ -73,12 +72,8 @@ void autonomous() {
  */
 
 void opcontrol() {
-	headingDisp.suspend();
-	headingErrorDisp_task.suspend();
-	distanceErrorDisp_task.suspend();
-	master.clear_line(2);
 	buttons.resume();
-	overheatedDisp.resume();
+	buttons.resume();
 	// Loops until broken by controller or competition control
 	while (true) {
 		joysticks();
