@@ -7,5 +7,6 @@
 extern pros::Task mainDisp;
 extern pros::Task pidErrorDisp_task;
 
-void headingErrorDisp(double expectedTheta, double expectedDist);
+void pidErrorDisp(double expectedTheta, double expectedDist);
+void pidErrorDisp();
 void initialize_fn();

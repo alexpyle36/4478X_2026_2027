@@ -16,7 +16,7 @@ struct scoreParams {
 };
 
 struct moveParams {
-    int maxspeed = 200;
+    int maxspeed = -1; // Use the cascade's maximum speed.
     bool up = true;
 };
 
@@ -38,12 +38,14 @@ class Cascade {
         void brake(/*brakeParams params = {}*/);
 
         double getHeight();
+
+        int maxMotorSpeed();
     private:
         pros::MotorGroup motors;
 
-        int inchesToDegrees(double inches);
+        static int inchesToDegrees(double inches);
 
-        double degreesToInches(double deg);
+        static double degreesToInches(double deg);
 
         static double perimeter;
 };

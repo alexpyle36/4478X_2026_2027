@@ -12,24 +12,25 @@ void PID_tuning(PID type, double expected) {
 	chassis.setPose(0, 0, 0);
 	switch (type) {
 		case LATERAL:
-			headingErrorDisp(0, expected);
-			headingErrorDisp(0, expected);
+			pidErrorDisp(0, expected);
     		chassis.moveToPoint(0, expected, 100000);
+			chassis.waitUntilDone();
+			delay(2000);
+			pidErrorDisp();
+    		//chassis.moveToPoint(0, expected, 100000);
 			break;
 		case ANGULAR:
-			headingErrorDisp(expected, 0);
-			headingErrorDisp(expected, 0);
+			pidErrorDisp(expected, 0);
 			chassis.turnToHeading(expected, 100000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE});
 			break;
 		case ALL:
-			chassis.moveToPoint(0, 24, 100000);
+			chassis.moveToPoint(0, expected, 100000);
 			chassis.turnToHeading(90, 100000);
-			chassis.moveToPoint(24, 24, 100000);
+			chassis.moveToPoint(expected, expected, 100000);
+			chassis.turnToHeading(135, 100000);
+			chassis.moveToPoint(expected/2, expected/2, 100000);
 			chassis.turnToHeading(180, 100000);
-			chassis.moveToPoint(24, 0, 100000);
-			chassis.turnToHeading(270, 100000);
-			chassis.moveToPoint(0, 0, 100000);
-			chassis.turnToHeading(0, 100000);
+			chassis.moveToPoint(expected/2, 0, 100000);
 			break;
 	}	
 }

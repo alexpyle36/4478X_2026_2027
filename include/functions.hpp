@@ -6,10 +6,3 @@
 using namespace pros;
 
 double wrap(double value, double min, double max);
-void headingWrap_fn();
-void poseReset_fn();
-void impactCorrection_fn();
-
-extern pros::Task headingWrap;
-extern pros::Task poseReset;
-extern pros::Task impactCorrection;

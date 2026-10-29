@@ -169,7 +169,6 @@ lemlib::Pose rayCasting() {
     distTheta = 180 * distTheta / M_PI;
 
     // Sanity check
-
     xError = distX - chassis.getPose().x;
     yError = distY - chassis.getPose().y;
     linearError = std::sqrt(std::pow(xError, 2) + std::pow(yError, 2));

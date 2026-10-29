@@ -1,7 +1,9 @@
+#include "functions.hpp"
 #include "main.h" // IWYU pragma: keep
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "pros/adi.hpp"
 #include "pros/motors.h"
+#include <algorithm>
 #include <math.h>
 #include "devices.hpp"
 
@@ -29,6 +31,21 @@ Cascade::Cascade(AbstractMotor& motorgroup) : motors(motorgroup) {}
 
 double Cascade::perimeter = ((0.164 * M_PI) + (((31.0 / 36.0) - 0.164) * 4));
 
+int Cascade::maxMotorSpeed() {
+	const auto gearings = motors.get_gearing_all();
+	if (gearings.empty() || gearings.front() == MotorGears::invalid) return 0;
+
+	const auto gearing = gearings.front();
+	for (const auto motorGearing : gearings) {
+		if (motorGearing != gearing) return 0;
+	}
+
+	if (gearing == MotorGears::red) return 100;
+	if (gearing == MotorGears::green) return 200;
+	if (gearing == MotorGears::blue) return 600;
+	return 0;
+}
+
 int Cascade::inchesToDegrees(double inches) {
 	return std::round((inches * 360) / perimeter);
 }
@@ -53,8 +70,11 @@ void Cascade::setZeroPos(double inches) {
 }
 
 void Cascade::move(moveParams params) {
-	if (params.up) motors.move_velocity(abs(params.maxspeed));
-	else motors.move_velocity(-abs(params.maxspeed));
+	const int maxSpeed = maxMotorSpeed();
+	const int speed = params.maxspeed == -1
+		? maxSpeed
+		: std::min(std::abs(params.maxspeed), maxSpeed);
+	motors.move_velocity(params.up ? speed : -speed);
 }
 
 void Cascade::brake(/*brakeParams params*/) {
@@ -124,10 +144,6 @@ lemlib::Drivetrain drivetrainSettings(&left_mg,
 );
 // Imu
 Imu imu(15);
-// Vertical tracking wheel encoder
-Rotation vertical_sensor(8);
-// Horizontal tracking wheel encoder
-Rotation horizontal_sensor(9);
 // Pneumatic claw
 adi::DigitalOut clawADI('A');
 // Claw object for controlling the claw pneumatic
@@ -141,47 +157,37 @@ Distance back_sensor(16);
 // Left distance sensor
 Distance left_sensor(17);
 // Cascade motor group
-MotorGroup cascadeMotorGroup({1, -2, 9, -10}, MotorGearset::green);
+MotorGroup cascadeMotorGroup({1, -2, 9, -10}, MotorGearset::blue);
 // Cascade object for controlling the cascade lift
 Cascade cascade(cascadeMotorGroup);
-// Vertical tracking wheel
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_sensor,
-											  lemlib::Omniwheel::NEW_2,
-											  1 // temporary
-);
-// Horizontal tracking wheel
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_sensor,
-											    lemlib::Omniwheel::NEW_2,
-											    1 // temporary
-);
 // Odometry settings
-lemlib::OdomSensors odomSensors(nullptr,
+	lemlib::OdomSensors odomSensors(nullptr,
 								nullptr,
 								nullptr,
 								nullptr,
 								&imu
 );
 // Lateral PID controller
-lemlib::ControllerSettings lateral_controller(10, // Best working value: 10
-											  0,
-											  3, // Best working value: 3
-											  3,
-											  1,
-											  100,
-											  3,
-											  500,
-											  20 
+lemlib::ControllerSettings lateral_controller(12, // Best working value: 20
+											  0, // Best working value: 0
+											  3.95, // Best working value: 5
+											  0, // Best working value: 3
+											  0, // Best working value: 1
+											  0, // Best working value: 100
+											  0, // Best working value: 3
+											  0, // Best working value: 500
+											  0 // Best working value: 20
 );
 // Angular PID controller
 lemlib::ControllerSettings angular_controller(2.35, // Best working value: 2.35
 											  0.001, // Best working value: 0
 											  19.0, // Best working value: 19
 											  0,
-											  0,
-											  0,
-											  0,
-											  0,
-											  0 // Best working value: 0
+											  1,
+											  100,
+											  3,
+											  500,
+											  0
 );
 // Input curve for throttle input during driver control
 lemlib::ExpoDriveCurve throttle_curve(3, // Out of 127

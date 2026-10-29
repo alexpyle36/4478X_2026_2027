@@ -38,7 +38,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-	initialize_fn();
+
 }
 
 /**
@@ -53,7 +53,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-    //autonRoute(FullSkills);
+	//autonRoute(FullSkills);
 	PID_tuning(LATERAL, 24);
 }
 
@@ -72,7 +72,7 @@ void autonomous() {
  */
 
 void opcontrol() {
-	buttons.resume();
+	chassis.cancelMotion();
 	buttons.resume();
 	// Loops until broken by controller or competition control
 	while (true) {

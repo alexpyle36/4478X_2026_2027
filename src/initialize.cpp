@@ -108,8 +108,11 @@ void rayCastingInitialize() {
 
 void mainDisp_fn() {
     int overheated = 0;
+    float theta;
     while (true) {
-        lcd::print(1, "Theta: %.2f", chassis.getPose().theta);
+        theta = chassis.getPose().theta;
+        theta = wrap(theta, 0, 360);
+        lcd::print(1, "Theta: %.2f", theta);
         lcd::print(4, "e: %.2f", cascadeMotorGroup.get_target_position(0));
         lcd::print(5, "e: %.2f", cascadeMotorGroup.get_target_position(1));
         lcd::print(6, "e: %.2f", cascadeMotorGroup.get_target_position(2));
@@ -143,8 +146,8 @@ double expectedDistance = 0;
 
 void pidErrorDisp_fn() {
     while (true) {
-        if (expectedHeading != 0) lcd::print(2, "Theta Error: %.2f", chassis.getPose().theta - expectedHeading);
-        if (expectedDistance != 0) lcd::print(3, "Dist Error: %.2f", chassis.getPose().y - expectedDistance);
+        if (expectedHeading != 0) master.print(2, 0, "Theta Error: %.2f", chassis.getPose().theta - expectedHeading);
+        if (expectedDistance != 0) master.print(2, 0, "Dist: %.2f", chassis.getPose().y); lcd::print(3, "Dist: %.2f", chassis.getPose().y);
         delay(20);
     }
 }
@@ -152,21 +155,36 @@ void pidErrorDisp_fn() {
 Task mainDisp(mainDisp_fn);
 Task pidErrorDisp_task(pidErrorDisp_fn);
 
-void headingErrorDisp(double expectedTheta, double expectedDist) {
+bool on = true;
+
+void pidErrorDisp(double expectedTheta, double expectedDist) {
     expectedHeading = expectedTheta;
     expectedDistance = expectedDist;
-    pidErrorDisp_task.resume();
+    if (!on) {
+        pidErrorDisp_task.resume();
+        on = !on;
+    } else {
+        pidErrorDisp_task.suspend();
+        on = !on;
+    }
+}
+
+void pidErrorDisp() {
+    if (!on) {
+        pidErrorDisp_task.resume();
+        on = !on;
+    } else {
+        pidErrorDisp_task.suspend();
+        on = !on;
+    }
 }
 
 void initialize_fn() {
     lcd::initialize();
     buttons.suspend();
-    pidErrorDisp_task.suspend();
-    poseReset.suspend();
-    impactCorrection.suspend();
+    pidErrorDisp();
     chassis.calibrate(); // calibrate sensors
-    mainDisp.resume();
-    headingWrap.resume();
+    mainDisp.suspend();
     claw.setClaw(Claw::CLOSED);
-    rayCastingInitialize();
+    //rayCastingInitialize();
 }
